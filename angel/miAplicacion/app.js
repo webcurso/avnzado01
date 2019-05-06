@@ -6,13 +6,26 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-
+var misionRouter = require('./routes/mision');
+var mongoose = require('mongoose');
 var app = express();
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/test', {useNewUrlParser:
+true});
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function() {
+console.log('conectado!');
+});
+
 
 var myLogger = function (req, res, next) {
   console.log('LOGGED');
   next();
   };
+
+ 
+  
 
 
 // view engine setup
@@ -27,7 +40,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(myLogger);
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-
+app.use('/mision',misionRouter);
   
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
