@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UTN Programación avanzada</title>
+
+    <link href="/ajax/assets/bootstrap/css/bootstrap.css" rel="stylesheet">
+
+    <link href="/ajax/assets/css/style.css" rel="stylesheet">
+
+    <!-- Incluir jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+
+
+
+
+    
+</head>
+
+<body>
+
+   <script type="text/javascript" language="javascript">
+ 
+    var READY_STATE_UNINITIALIZED=0; 
+    var READY_STATE_LOADING=1; 
+    var READY_STATE_LOADED=2;
+    var READY_STATE_INTERACTIVE=3; 
+    var READY_STATE_COMPLETE=4;
+    var peticion_http;
+    function muestraContenido() {
+      if(peticion_http.readyState == READY_STATE_COMPLETE) {
+        if(peticion_http.status == 200) {
+          alert(peticion_http.responseText);
+        }
+      }
+      else{
+        
+      }
+    }
+     
+    function descargaArchivo() {
+        peticion_http = new XMLHttpRequest();
+        peticion_http.onreadystatechange = muestraContenido;
+        peticion_http.open("GET", "http://localhost/ajax/holamundo.txt", true);
+        peticion_http.send(null);
+    }
+     
+    window.onload = descargaArchivo;
+     
+    </script>
+
+
+</body>
+</html>
+

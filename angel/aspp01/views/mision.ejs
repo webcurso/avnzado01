@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script type="text/javascript" src="operar.js">
+
+    </script>
+    <title>Prueba</title>
+
+  </head>
+  <!-- FIN HEADER -->
+  <body>
+      <p>calculadora</p>
+      <label id="resultado"></label>
+      <p>OPERANDO 1<input type="text" id="operando_1"></input></p>
+      <p>OPERANDO 2<input type="text" id="operando_2"></input></p>
+      <input type="button" id="suma" name="+" onclick="operar('+')" value=SUMAR></inpuit>
+      <input type="button" id="resta" name="-" onclick="operar('-')" value=RESTAR></inpuit>
+      <input type="button" id="multiplica" name="*" onclick="operar('*')" value=MULTIPLICAR></inpuit>
+      <input type="button" id="divide" name="/" value=DIVIDIR onclick="operar('/')"></inpuit>
+      <input type="button" id="clear" name="c" onclick="reset()"></input>
+      
+      <p> resultado</p>
+
+      
+
+  </body>
+
+  <script>
+  
+  var operar = (operador) => {
+    var operando1 = document.getElementById('operando_1').value;
+    var operando2 = document.getElementById('operando_2').value;
+     
+    console.log(operando1)
+    
+    if (operador == "+") {
+      console.log (Number(operando1) + Number(operando2));
+      var resultado = parseInt(operando1) + parseInt(operando2);
+      alert("La suma es: "+ resultado);
+      document.getElementById('resultado').value = resultado;
+    }
+
+    if ( operador == "-") {
+      var resultado = parseInt(operando_1) - parseInt(operando_2);
+    }
+    if ( operador == "/") {
+      var resultado = parseInt(operando_1) / parseInt(operando_2);
+    }
+
+    if ( operador == "*") {
+      var resultado = parseInt(operando_1) * parseInt(operando_2);
+    }
+
+
+
+      
+      }
+
+  
+  
+  
+  
+  </script>
+</html>

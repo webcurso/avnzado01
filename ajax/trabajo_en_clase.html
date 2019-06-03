@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UTN Programación avanzada</title>
+
+    <link href="/ajax/assets/bootstrap/css/bootstrap.css" rel="stylesheet">
+
+    <link href="/ajax/assets/css/style.css" rel="stylesheet">
+
+    <!-- Incluir jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+
+    
+</head>
+
+<body>
+
+   <button id="aa"></button>
+        <div id="aa"></div>
+
+   <script type="text/javascript" language="javascript">
+    var traerDatos = function(){
+        $.ajax({
+      url: 'http://localhost:3000/users/api',
+      type: 'GET',
+      async: true,
+      data: '',
+      success: function(data){
+        console.log(data);
+      },
+      error: function(error){
+        console.log(data);
+      }
+    });        
+    }
+  
+     $('#aa').click(function(){
+         traerDatos()
+     })
+   
+     
+    </script>
+
+
+</body>
+</html>
+
