@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <p>Bienvenido usuario: <%= usuarioLogueado%></p>
+    <p>Lista de usuarios de la base de datos:</p>
+    <div>
+    	<% if(usuarios.length > 0){ %>
+	    	<% for(var i=0; i< usuarios.length; i++){ %>
+	    		<p><%= usuarios[i]%>&nbsp;<a href="/users/eliminar/<%= usuarios[i]._id %>">Eliminar</a></p>
+	    	<% } %>	    	
+	    <% }else{ %>
+			<strong>--No hay usuarios--</strong>
+	    <% } %>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>ABM</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Incluir jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+</head>
+<body style="padding: 20px;">
+	<!-- Formularios de Alta de usuarios -->
+	<h1>Alta JQuery con Ajax</h1>
+	<form id="myForm2" action="" method="post"> 
+		Nombre: <input type="text" name="nombre" id="nombre"/> 
+		Apellido: <input type="text" name="apellido" id="apellido"/> 
+		Edad: <input type="text" name="edad" id="edad"/> 
+	    <input type="button" id="altaBtn" value="Nuevo usuario" /> 
+	</form>			
+	<hr>
+	<h1>Lista de usuarios</h1>	
+	<button id="actualizarListaUsuariosBtn">Actualizar Lista de usuarios</button>
+	<div class="table-responsive">          
+		<table class="table">
+	  		<thead>
+				<th>Nombre</th>
+				<th>Apellido</th>
+				<th>Edad</th>
+				<th>Opciones</th>						
+			</thead>
+			<tbody id="listaDeUsuarios">
+			</tbody>
+		</table>
+	</div>	
+	<div id="modificarForm" class="card" style="display: none">
+		<h5 class="card-title">Modificacion JQuery con Ajax</h5>
+		<div class="card-body">
+			<form id="myForm3" action="" method="post"> 
+				Nombre: <input type="text" name="nombre" id="nombreMod"/> 
+				Apellido: <input type="text" name="apellido" id="apellidoMod"/> 
+				Edad: <input type="text" name="edad" id="edadMod"/> 
+				<input type="hidden" name="id" id="idMod"/>
+			    <input type="button" id="modificarBtn" value="Modificar" /> 
+			    <input type="button" id="cancelarModBtn" value="Cancelar" /> 			    
+			</form>	
+		</div>		
+	</div>	
+</body>
+</html>
+
+<script type="text/javascript" language="javascript">
+	
+	/*
+	 * Alta de usuario
+	 */
+
+	 //Función de callback
+	var altaUsuario = function(data){
+		alert(data);
+		console.log(data);
+		actualizarListaUsuarios();		
+	}
+
+	//Acción del formulario
+	$( "#altaBtn" ).click(function() {
+		//var data = convertirDatosFormularioAJson('myForm2')
+		var data = {
+			'nombre': document.getElementById("nombre").value,
+			'apellido': document.getElementById("apellido").value, 
+			'edad': document.getElementById("edad").value
+		};
+	    ejecutarAjax('POST', 'http://localhost:3000/users/api/nuevo', data, altaUsuario);
+	});
+
+
+	/*
+	 * Actualizar lista de usuarios
+	 */
+
+	 //Formatear la lista de usuarios
+	var mostrarListaDeUsuarios = function(data){
+		document.getElementById("listaDeUsuarios").innerHTML = '<tbody>';
+		for(usuario of data){
+			document.getElementById("listaDeUsuarios").innerHTML += `
+				<td>${usuario.nombre}</td>
+				<td>${usuario.apellido}</td>
+				<td>${usuario.edad}</td>
+				<td>
+					<button class="btn btn-danger" onclick="eliminarUsuarioFx('${usuario._id}')">Eliminar</button>&nbsp;
+					<button class="btn btn-primary" onclick="modificarUsuarioForm('${usuario._id}', '${usuario.nombre}', '${usuario.apellido}', '${usuario.edad}')">Modificar</button>
+				</td>
+			`; 
+		}
+		document.getElementById("listaDeUsuarios").innerHTML += '</tbody>';
+		console.log(data);
+	}
+
+	//Función para actualizar lista de usuarios
+	var actualizarListaUsuarios = function(){
+		var data = '';
+	    ejecutarAjax('GET', 'http://localhost:3000/users/api', data, mostrarListaDeUsuarios);
+	}
+	//Acción del formulario
+	$( "#actualizarListaUsuariosBtn" ).click(function() {
+		actualizarListaUsuarios();
+	});
+
+
+	/*
+	 * Eliminar usuario
+	 */
+
+	 //Formatear la lista de usuarios
+	var eliminarUsuario = function(data){
+		alert(data);
+		console.log(data);
+		actualizarListaUsuarios();	
+	}
+
+	var eliminarUsuarioFx = function(usuarioId){
+		var data = '';
+	    ejecutarAjax('DELETE', 'http://localhost:3000/users/api/eliminar/'+usuarioId, data, eliminarUsuario);
+	}
+
+
+	/*
+	 * Modificar usuario
+	 */
+
+	 //Formatear la lista de usuarios
+	var modificarUsuario = function(data){
+		alert(data);
+		console.log(data);
+		actualizarListaUsuarios();	
+	}
+
+	var modificarUsuarioFx = function(){
+		var data = {
+			'id': document.getElementById("idMod").value,
+			'nombre': document.getElementById("nombreMod").value,
+			'apellido': document.getElementById("apellidoMod").value,
+			'edad': document.getElementById("edadMod").value			
+		};
+	    ejecutarAjax('PUT', 'http://localhost:3000/users/api/modificar', data, modificarUsuario);
+		actualizarListaUsuarios();		    
+	}
+
+	var modificarUsuarioForm = function(id, nombre, apellido, edad){
+		//setear los datos en el formulario de modificacion
+		document.getElementById("idMod").value = id;
+		document.getElementById("nombreMod").value = nombre;
+		document.getElementById("apellidoMod").value = apellido;
+		document.getElementById("edadMod").value = edad;
+
+		//Mostrar el formulario de modificacion
+		$('#modificarForm').show(500);
+	}
+
+	//Acción del formulario modificar
+	$( "#modificarBtn" ).click(function() {
+		modificarUsuarioFx();
+	});
+
+	//Acción del formulario cancelar
+	$( "#cancelarModBtn" ).click(function() {
+		$('#modificarForm').hide(1000);
+	});
+
+	/*
+	 * Funciones comunes
+	 */
+
+	var convertirDatosFormularioAJson = function(formulario){
+		var formElement = document.getElementById(formulario);
+		var object = {};
+		var formData = new FormData(formElement);
+		formData.forEach(function(value, key){
+		    object[key] = value;
+		});
+		var json = JSON.stringify(object);
+		return json;
+	}
+
+	var ejecutarAjax = function(metodo, url, datosAenviar, funcionOk){
+	    $.ajax({
+	        url: url,
+	        type: metodo,
+	        async: true,
+	        data: datosAenviar,
+	        timeout: 10000,
+	        success: function(data){
+	            funcionOk(data);
+	        },
+	        error: function(error){
+	        	alert(error);
+	        }
+	    });        
+	}
+</script>
